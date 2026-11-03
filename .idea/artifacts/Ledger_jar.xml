@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Ledger:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Ledger_jar</output-path>
+    <root id="archive" name="Ledger.jar">
+      <element id="module-output" name="Ledger" />
+    </root>
+  </artifact>
+</component>
