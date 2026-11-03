@@ -169,14 +169,14 @@ public class Program {
     // HOME MENU
     // ==========================================
 
+
     public static void displayHomeScreen() {
 
         clearScreen();
 
         System.out.println(CYAN + """
-                
-                
-                """ + RESET);
+            
+            """ + RESET);
 
         System.out.println(GRAY + "              PERSONAL FINANCE DASHBOARD" + RESET);
 
@@ -193,10 +193,10 @@ public class Program {
         System.out.println(BLUE +
                 "\n        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" + RESET);
 
-        System.out.printf(GREEN + "\n        Current Balance: $1,000,000,000" +
-                        "\n" + RESET,
+        System.out.printf(GREEN + "\n        Current Balance: $%.2f\n" + RESET,
                 calculateBalance());
     }
+
 
     // ==========================================
     // FILE CREATION
@@ -400,14 +400,17 @@ public class Program {
 
     public static double calculateBalance() {
 
-        double balance = 0;
+        double balance = 10000.00;
 
         ArrayList<String[]> transactions = getTransactions();
 
         for (String[] transaction : transactions) {
 
             try {
-                balance += Double.parseDouble(transaction[4]);
+                double amount = Double.parseDouble(transaction[4]);
+
+                balance += amount;
+
             } catch (NumberFormatException e) {
                 System.out.println("Invalid transaction amount.");
             }
@@ -572,7 +575,7 @@ public class Program {
             }
         }
 
-        double balance = deposits - payments;
+        double balance = calculateBalance();
 
         System.out.println(CYAN +
                 "\n=============== FINANCIAL REPORT ===============" + RESET);
