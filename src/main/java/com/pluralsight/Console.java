@@ -12,5 +12,7 @@ public class Console {
     public static final String RED = "\033[0;91m";
     public static final String RESET = "\033[0m";
     public static final String BRIGHT_PURPLE = "\033[0;95m";
+    public static final String YELLOW = "\033[0;33m";
+    public static final String BRIGHT_YELLOW = "\033[0;93m";
 
 }

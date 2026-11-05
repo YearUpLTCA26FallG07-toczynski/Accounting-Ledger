@@ -1,6 +1,8 @@
 package com.pluralsight;
 
 import java.util.*;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 import static com.pluralsight.Console.*;
 
@@ -10,6 +12,9 @@ public class Program {
 
     public static void main(String[] args) {
 
+        // Enable UTF-8 encoding for console output and errors
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+        System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
         Transaction.createFile();
         startScreen();
 
@@ -64,41 +69,26 @@ public class Program {
         clearScreen();
 
         // Main ASCII logo
-        System.out.println(BRIGHT_PURPLE + """
-             ▄▄                        ▄▄
-             ██                        ██
-             ██         ▄████▄    ▄███▄██   ▄███▄██   ▄████▄    ██▄████
-             ██        ██▄▄▄▄██  ██▀  ▀██  ██▀  ▀██  ██▄▄▄▄██   ██▀
-             ██        ██▀▀▀▀▀▀  ██    ██  ██    ██  ██▀▀▀▀▀▀   ██
-             ██▄▄▄▄▄▄  ▀██▄▄▄▄█  ▀██▄▄███  ▀██▄▄███  ▀██▄▄▄▄█   ██
-             ▀▀▀▀▀▀▀▀    ▀▀▀▀▀     ▀▀▀ ▀▀   ▄▀▀▀ ██    ▀▀▀▀▀    ▀▀
-                                            ▀████▀▀
-            """ + RESET);
-
-        System.out.println(GRAY +
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" + RESET);
-
-        // Personal Finance ASCII art
         System.out.println(BLUE + """
-             ██████   █████  ███    ██ ██   ██ ██ ███    ██  ██████         ██        ███    ███  ██████  ██████  ███████
-             ██   ██ ██   ██ ████   ██ ██  ██  ██ ████   ██ ██              ██        ████  ████ ██    ██ ██   ██ ██
-             ██████  ███████ ██ ██  ██ █████   ██ ██ ██  ██ ██   ███     ████████     ██ ████ ██ ██    ██ ██████  █████
-             ██   ██ ██   ██ ██  ██ ██ ██  ██  ██ ██  ██ ██ ██    ██     ██  ██       ██  ██  ██ ██    ██ ██   ██ ██
-             ██████  ██   ██ ██   ████ ██   ██ ██ ██   ████  ██████      ██████       ██      ██  ██████  ██   ██ ███████
+[0;37m [0;34m▐█[0;37m     [0;34m▐█████▐█████▄[0;37m    [0;34m▄█▓▓▓▓[0;37m  [0;34m▐█████▐█████▄[0;37m  [0m
+[0;37m [0;34m▐█▌[0;37m    [0;34m▐█▌[0;37m    [0;34m▐██▀█[0;36;44m [0;34m▌[0;90m▓[0;37m [0;34m██▀[0;37m [0;34m▐█▌[0;37m  [0;34m▐█▌[0;37m    [0;34m▐██▀█[0;36;44m [0;34m▌[0;90m▓[0m
+[0;37m [0;36;44m░ [0;37m  [0;90m░░[0;37m [0;36;44m░ [0;34m██[0;37m   [0;34m██[0;37m  [0;34m▐██[0;37m [0;34m▐█▌[0;36m░[0;37m [0;34m██[0;37m [0;90m▐[0;37m [0;36;44m░ [0;34m██[0;37m   [0;34m██[0;37m  [0;34m▐██[0;37m [0m
+[0;37m [0;34m██[0;37m [0;90m░░[0;36m░[0;37m [0;34m██[0;37m   [0;36m░[0;37m [0;34m██[0;37m [0;36m░[0;37m [0;34m██▌█[0;94;44m░[0;37m [0;90m▌[0;37m    [0;36m░[0;37m [0;34m██[0;37m   [0;36m░[0;37m [0;34m██[0;37m [0;36m░[0;37m [0;34m█▌[0;37m [0m
+[0;34m▐[0;94;44m░[0;34m▌[0;37m [0;36m░░░[0;34m▐[0;94;44m░[0;34m▌[0;37m [0;36m░░░[0;34m▐[0;94;44m░[0;34m▌[0;90m▐[0;36m░[0;37m [0;94;44m░[0;34m█▌█[0;94;44m▒[0;37m  [0;34m██[0;94;44m░[0;34m█[0;37m [0;34m▐[0;94;44m░[0;34m▌[0;37m [0;36m░░░[0;34m▐[0;94;44m░[0;34m▌▄▄[0;94;44m░[0;34m▀[0;90m░▌[0m
+[0;94m▐[0;94;44m▒[0;34m▌[0;37m [0;90m▀[0;37m  [0;94m▐[0;94;44m▒[0;34m▌[0;37m [0;90m▀[0;37m  [0;34m▐[0;94;44m▒[0;94m▌[0;90m▐[0;37m [0;94m▐[0;94;44m▒[0;34m█[0;37m [0;34m▐[0;94;44m▓[0;94m▌[0;37m [0;90m▄[0;37m [0;94;44m▒░[0;34m░[0;94m▐[0;94;44m▒[0;34m▌[0;37m [0;90m▀[0;37m  [0;34m▐[0;94;44m▒[0;94m▌[0;37m [0;34m▀[0;94;44m░[0;34m▌[0;90m▀[0;37m [0m
+[0;94m█[0;94;44m▓[0;37m [0;94m▄▄[0;94;44m▓[0;94m██[0;94;44m▓[0;37m [0;94m▄▄[0;94;44m▓[0;94m█▐[0;94;44m▓[0;37m  [0;94m▄[0;94;44m▓[0;94m█[0;37m   [0;94m██▄[0;37m  [0;94;44m▓▒[0;37m [0;94m█[0;94;44m▓[0;37m [0;94m▄▄[0;94;44m▓[0;94m█▐[0;94;44m▓[0;37m [0;90m░[0;37m [0;94;44m▒▓[0;94m▌[0;37m [0m
+[0;94m▓██▀▀[0;37m  [0;94m▓██▀▀[0;37m  [0;94m▐█▄[0;94;47m██[0;94m▀[0;37m     [0;94m▀▓█▄█[0;94;44m▓[0;37m [0;94m▓██▀▀[0;37m  [0;94m▐█[0;37m [0;90m░[0;37m [0;94m▐[0;94;44m▓[0;94m█[0;37m [0m
+[0;37m              [0;94m██▀[0;37m           [0;94m▀█▌[0;37m        [0;94m██▀[0;37m  [0;94m█▀[0;37m  [0m
+[0;37m              [0;94m▀[0;37m               [0;94m▌[0;37m        [0;94m▀[0;37m        [0m
 
-                            PERSONAL FINANCE
-
-                          TRANSACTION SYSTEM
+                Bank safer.
             """ + RESET);
 
-        System.out.println(GRAY +
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" + RESET);
-
         System.out.println();
         System.out.println();
 
-        System.out.print(CYAN +
-                "              [ PRESS ENTER TO START ]" + RESET);
+        System.out.print(BLUE +
+                "         [ PRESS ENTER TO START ]" + RESET);
 
         scanner.nextLine();
 
@@ -116,11 +106,11 @@ public class Program {
         System.out.println("\n\n");
         System.out.println(WHITE + "          INITIALIZING PERSONAL LEDGER..." + RESET);
 
-        System.out.print(CYAN + "\n          [");
+        System.out.print(BRIGHT_YELLOW + "\n          [");
 
         for (int i = 0; i < 25; i++) {
 
-            System.out.print("█");
+            System.out.print("★");
 
             try {
                 Thread.sleep(40);
@@ -132,7 +122,7 @@ public class Program {
 
         System.out.println("] 100%" + RESET);
 
-        System.out.println(GREEN + "\n          SYSTEM READY." + RESET);
+        System.out.println(WHITE + "\n          SYSTEM READY." + RESET);
 
         try {
             Thread.sleep(500);
@@ -432,7 +422,7 @@ public static void displayTransactions(
         System.out.println(BLUE +
                 "------------------------------------------------" + RESET);
 
-        System.out.printf(WHITE +
+        System.out.printf(BLUE +
                 "Current Balance:      $%.2f%n" + RESET, balance);
 
         System.out.println();
