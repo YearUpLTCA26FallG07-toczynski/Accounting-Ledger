@@ -1,35 +1,16 @@
 
 package com.pluralsight;
 
-import java.util.Scanner;
-
-
 public class Console {
 
-    private static final Scanner scanner = new Scanner(System.in);
+    // Terminal colors
+    public static final String CYAN = "\033[0;96m";
+    public static final String BLUE = "\033[0;36m";
+    public static final String WHITE = "\033[0;97m";
+    public static final String GRAY = "\033[0;90m";
+    public static final String GREEN = "\033[0;92m";
+    public static final String RED = "\033[0;91m";
+    public static final String RESET = "\033[0m";
+    public static final String BRIGHT_PURPLE = "\033[0;95m";
 
-
-
-    public static String promptForString(String prompt){
-        System.out.print(prompt);
-        return scanner.nextLine();
-    }
-
-    public static int promptForInt(String prompt){
-
-        int result;
-
-        while(true){
-            try{
-
-                System.out.print(prompt);
-                result = scanner.nextInt();
-                scanner.nextLine();
-                return result;
-            } catch (Exception e) {
-                System.out.println("Invalid input, please enter a number.");
-                scanner.nextLine();
-            }
-        }
-    }
 }

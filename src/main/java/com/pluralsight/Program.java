@@ -1,12 +1,12 @@
-
 package com.pluralsight;
 
 import java.io.*;
 import java.time.LocalDate;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static com.pluralsight.Console.*;
 
 public class Program {
 
@@ -14,15 +14,6 @@ public class Program {
 
     public static final String FILE_NAME = "transactions.csv";
 
-    // Terminal colors
-    public static final String CYAN = "\033[0;96m";
-    public static final String BLUE = "\033[0;36m";
-    public static final String WHITE = "\033[0;97m";
-    public static final String GRAY = "\033[0;90m";
-    public static final String GREEN = "\033[0;92m";
-    public static final String RED = "\033[0;91m";
-    public static final String RESET = "\033[0m";
-    public static final String BRIGHT_PURPLE = "\033[0;95m";
 
     public static void main(String[] args) {
 
