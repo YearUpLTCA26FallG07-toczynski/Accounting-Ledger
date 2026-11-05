@@ -1,3 +1,4 @@
+
 package com.pluralsight;
 
 import java.time.LocalDate;
@@ -25,8 +26,8 @@ public class Reports {
 
             LocalDate today = LocalDate.now();
 
-            ArrayList<String[]> transactions =
-                    Program.getTransactions();
+            ArrayList<Transaction> transactions =
+                    Transaction.loadAll();
 
             switch (choice) {
 
@@ -76,16 +77,15 @@ public class Reports {
     }
 
     public static void showDateReport(
-            ArrayList<String[]> transactions,
+            ArrayList<Transaction> transactions,
             LocalDate startDate,
             LocalDate endDate) {
 
-        ArrayList<String[]> results = new ArrayList<>();
+        ArrayList<Transaction> results = new ArrayList<>();
 
-        for (String[] transaction : transactions) {
+        for (Transaction transaction : transactions) {
 
-            LocalDate transactionDate =
-                    LocalDate.parse(transaction[0]);
+            LocalDate transactionDate = transaction.getDate();
 
             if (!transactionDate.isBefore(startDate)
                     && !transactionDate.isAfter(endDate)) {
@@ -98,13 +98,13 @@ public class Reports {
     }
 
     public static void searchVendor(
-            ArrayList<String[]> transactions, String vendor) {
+            ArrayList<Transaction> transactions, String vendor) {
 
-        ArrayList<String[]> results = new ArrayList<>();
+        ArrayList<Transaction> results = new ArrayList<>();
 
-        for (String[] transaction : transactions) {
+        for (Transaction transaction : transactions) {
 
-            if (transaction[3].equalsIgnoreCase(vendor)) {
+            if (transaction.getVendor().equalsIgnoreCase(vendor)) {
                 results.add(transaction);
             }
         }

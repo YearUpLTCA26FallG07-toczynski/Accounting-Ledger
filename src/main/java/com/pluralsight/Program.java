@@ -1,9 +1,5 @@
 package com.pluralsight;
 
-import java.io.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.pluralsight.Console.*;
@@ -12,12 +8,9 @@ public class Program {
 
     public static Scanner scanner = new Scanner(System.in);
 
-    public static final String FILE_NAME = "transactions.csv";
-
-
     public static void main(String[] args) {
 
-        createFile();
+        Transaction.createFile();
         startScreen();
 
         boolean running = true;
@@ -177,119 +170,9 @@ public class Program {
                 "\n        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" + RESET);
 
         System.out.printf(GREEN + "\n        Current Balance: $%.2f\n" + RESET,
-                calculateBalance());
+                Transaction.calculateBalance());
     }
 
-
-    // ==========================================
-    // FILE CREATION
-    // ==========================================
-
-    public static void createFile() {
-
-        File file = new File(FILE_NAME);
-
-        if (!file.exists()) {
-
-            try (BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(file))) {
-
-                writer.write("date|time|description|vendor|amount");
-                writer.newLine();
-
-            } catch (IOException e) {
-
-                System.out.println("Error creating file: " + e.getMessage());
-            }
-        }
-    }
-
-    // ==========================================
-    // READ TRANSACTIONS
-    // ==========================================
-
-    public static ArrayList<String[]> getTransactions() {
-
-        ArrayList<String[]> transactions = new ArrayList<>();
-
-        try (BufferedReader reader =
-                     new BufferedReader(new FileReader(FILE_NAME))) {
-
-            reader.readLine();
-
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-
-                String[] parts = line.split("\\|", -1);
-
-                if (parts.length == 5) {
-                    transactions.add(parts);
-                }
-            }
-
-        } catch (IOException e) {
-
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-
-        return transactions;
-    }
-
-    // ==========================================
-    // SAVE TRANSACTION
-    // ==========================================
-
-    public static void saveTransaction(
-            String description,
-            String vendor,
-            double amount) {
-
-        LocalDate date = LocalDate.now();
-        LocalTime time = LocalTime.now();
-
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("HH:mm:ss");
-
-        description = description.replace("|", "/");
-        vendor = vendor.replace("|", "/");
-
-        boolean saved = false;
-
-        try (BufferedWriter writer =
-                     new BufferedWriter(new FileWriter(FILE_NAME, true))) {
-
-            writer.write(
-                    date + "|"
-                            + time.format(formatter) + "|"
-                            + description + "|"
-                            + vendor + "|"
-                            + String.format(Locale.US, "%.2f", amount)
-            );
-
-            writer.newLine();
-            saved = true;
-
-            System.out.println(GREEN
-                    + "\nTransaction saved successfully!" + RESET);
-
-        } catch (IOException e) {
-
-            System.out.println(RED
-                    + "Error saving transaction: " + e.getMessage() + RESET);
-        }
-
-        // Display the updated balance after the file has been saved.
-        if (saved) {
-            System.out.println(BLUE
-                    + "\n========== UPDATED BALANCE ==========" + RESET);
-
-            System.out.printf(
-                    GREEN + "Current Balance: $%.2f\n" + RESET,
-                    calculateBalance()
-            );
-        }
-    }
 
     // ==========================================
     // ADD DEPOSIT
@@ -317,7 +200,7 @@ public class Program {
             return;
         }
 
-        saveTransaction(description, vendor, amount);
+        Transaction.saveTransaction(description, vendor, amount);
     }
 
     // ==========================================
@@ -346,7 +229,7 @@ public class Program {
             return;
         }
 
-        saveTransaction(description, vendor, -amount);
+        Transaction.saveTransaction(description, vendor, -amount);
     }
 
     // ==========================================
@@ -378,31 +261,6 @@ public class Program {
     }
 
     // ==========================================
-    // CALCULATE BALANCE
-    // ==========================================
-
-    public static double calculateBalance() {
-
-        double balance = 10000.00;
-
-        ArrayList<String[]> transactions = getTransactions();
-
-        for (String[] transaction : transactions) {
-
-            try {
-                double amount = Double.parseDouble(transaction[4]);
-
-                balance += amount;
-
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid transaction amount.");
-            }
-        }
-
-        return balance;
-    }
-
-    // ==========================================
     // LEDGER MENU
     // ==========================================
 
@@ -430,19 +288,19 @@ public class Program {
 
                 case "A":
                     clearScreen();
-                    displayTransactions(getTransactions(), "ALL");
+                    displayTransactions(Transaction.loadAll(), "ALL");
                     pause();
                     break;
 
                 case "D":
                     clearScreen();
-                    displayTransactions(getTransactions(), "DEPOSITS");
+                    displayTransactions(Transaction.loadAll(), "DEPOSITS");
                     pause();
                     break;
 
                 case "P":
                     clearScreen();
-                    displayTransactions(getTransactions(), "PAYMENTS");
+                    displayTransactions(Transaction.loadAll(), "PAYMENTS");
                     pause();
                     break;
 
@@ -464,54 +322,54 @@ public class Program {
     // DISPLAY TRANSACTIONS
     // ==========================================
 
-    public static void displayTransactions(
-            ArrayList<String[]> transactions,
-            String filter) {
+public static void displayTransactions(
+        ArrayList<Transaction> transactions,
+        String filter) {
 
         clearScreen();
 
         // Sort newest transactions first
         transactions.sort((a, b) -> {
 
-            int dateCompare = b[0].compareTo(a[0]);
+            int dateCompare = b.getDate().compareTo(a.getDate());
 
             if (dateCompare != 0) {
                 return dateCompare;
             }
 
-            return b[1].compareTo(a[1]);
+            return b.getTime().compareTo(a.getTime());
         });
 
-        System.out.println(CYAN +
-                "\n================ TRANSACTIONS ================" + RESET);
+        System.out.println(Console.CYAN +
+                "\n================ TRANSACTIONS ================" + Console.RESET);
 
-        System.out.println(WHITE +
-                "\nDATE | TIME | DESCRIPTION | VENDOR | AMOUNT" + RESET);
+        System.out.println(Console.WHITE +
+                "\nDATE | TIME | DESCRIPTION | VENDOR | AMOUNT" + Console.RESET);
 
-        System.out.println(BLUE +
-                "------------------------------------------------------------" + RESET);
+        System.out.println(Console.BLUE +
+                "------------------------------------------------------------" + Console.RESET);
 
         boolean found = false;
 
-        for (String[] transaction : transactions) {
+        for (Transaction transaction : transactions) {
 
-            double amount = Double.parseDouble(transaction[4]);
+            double amount = transaction.getAmount();
 
             if (filter.equals("ALL")
                     || (filter.equals("DEPOSITS") && amount > 0)
                     || (filter.equals("PAYMENTS") && amount < 0)) {
 
-                String color = amount >= 0 ? GREEN : RED;
+                String color = amount >= 0 ? Console.GREEN : Console.RED;
 
                 System.out.printf(
                         "%s | %s | %s | %s | %s$%.2f%s%n",
-                        transaction[0],
-                        transaction[1],
-                        transaction[2],
-                        transaction[3],
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
                         color,
                         amount,
-                        RESET
+                        Console.RESET
                 );
 
                 found = true;
@@ -519,11 +377,11 @@ public class Program {
         }
 
         if (!found) {
-            System.out.println(RED + "No transactions found." + RESET);
+            System.out.println(Console.RED + "No transactions found." + Console.RESET);
         }
 
-        System.out.println(BLUE +
-                "\n------------------------------------------------------------" + RESET);
+        System.out.println(Console.BLUE +
+                "\n------------------------------------------------------------" + Console.RESET);
     }
 
     // ==========================================
@@ -534,7 +392,7 @@ public class Program {
 
         clearScreen();
 
-        ArrayList<String[]> transactions = getTransactions();
+        ArrayList<Transaction> transactions = Transaction.loadAll();
 
         double deposits = 0;
         double payments = 0;
@@ -542,9 +400,9 @@ public class Program {
         int depositCount = 0;
         int paymentCount = 0;
 
-        for (String[] transaction : transactions) {
+        for (Transaction transaction : transactions) {
 
-            double amount = Double.parseDouble(transaction[4]);
+            double amount = transaction.getAmount();
 
             if (amount > 0) {
 
@@ -558,7 +416,7 @@ public class Program {
             }
         }
 
-        double balance = calculateBalance();
+        double balance = Transaction.calculateBalance();
 
         System.out.println(CYAN +
                 "\n=============== FINANCIAL REPORT ===============" + RESET);
